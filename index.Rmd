@@ -1,0 +1,5 @@
+---
+title: "Why so Spatial"
+site: distill::distill_website
+listing: posts
+---
