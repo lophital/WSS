@@ -1,0 +1,52 @@
+---
+title: "1st"
+description: |
+  A short description of the post.
+author:
+  - name: Nora Jones
+    url: https://example.com/norajones
+date: 2022-06-25
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Distill is a publication format for scientific and technical writing, native to the web.
+
+Learn more about using Distill at <https://rstudio.github.io/distill>.
+
+```{r}
+library(raster)
+library(virtualspecies)
+library(tidyverse)
+```
+
+```{r}
+XS <- readRDS("~/Documents/WSS/XS.rds")
+```
+
+
+```{r}
+map2(XS, 1:10,
+    function(X, y){
+set.seed(y)
+virtualspecies::generateRandomSp(raster.stack = X,
+                                 approach = "response",
+                                 rescale = T,
+                                 convert.to.PA = F,
+                                 relations = c("gaussian")) %>%
+  convertToPA(., 
+               PA.method = "probability",
+               prob.method = "linear",
+               species.prevalence = 0.5) %>%
+  sampleOccurrences(.,
+                    extract.probability = T,
+                    n = 600,
+                    type = "presence-absence")}) -> Occs
+```
+
